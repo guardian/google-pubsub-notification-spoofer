@@ -1,0 +1,16 @@
+<form method="POST" action="/handle-notification">
+    <div class="form-group">
+
+        <label for="subscriptionNotification">Subscription Notification</label>
+        
+        <select class="custom-select" name="subscriptionNotification">
+            <option selected>Please select a Subscription Notification Type</option>
+            <% subscriptionNotifications.forEach((notification) => {  %>
+                <option value=<%= notification.value %>><%= notification.type %></option>
+            <% })%>
+        </select>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Send Notification</button>
+</form>
