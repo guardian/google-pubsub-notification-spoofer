@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const axios = require('axios');
 const { sendMessageNotification, createDeveloperNotification } = require('../services/notifications');
 const { HANDLE_MESSAGE } = require('../config/api');
+
 describe('Notification service', () => {
 
     describe('API responses', () => {

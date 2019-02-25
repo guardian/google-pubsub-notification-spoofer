@@ -1,6 +1,6 @@
 const HOST_URL = 'http://localhost:9233';
 const HEALTH_CHECK = '/healthcheck';
-const HANDLE_MESSAGE = '/pushh/handle-message';
+const HANDLE_MESSAGE = '/push/handle-message';
 
 module.exports = {
     HOST_URL,
