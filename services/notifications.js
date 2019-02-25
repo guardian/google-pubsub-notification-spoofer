@@ -57,7 +57,7 @@ const createDeveloperNotification = (notificationType) => {
         subscriptionNotification, 
         ...{ eventTimeMillis: Date.now() },
     }
-    console.log(newDeveloperNotification);
+
     return newDeveloperNotification;
 }
 
@@ -71,12 +71,11 @@ const sendMessageNotification = (subscriptionNotification) => {
             return { data, status }
         })
         .then(data => {
-            console.log({data});
-            console.log('message sent');
+            // console.log(data.status);
             return data.status;
         }).catch(err => {
-            console.log(err.response.status);
-            console.log(err.response.statusText);
+            // console.log(err.response.status);
+            // console.log(err.response.statusText);
             return err.response.status;
         });
 }
@@ -84,4 +83,6 @@ const sendMessageNotification = (subscriptionNotification) => {
 module.exports = {
     subscriptionNotifications,
     sendMessageNotification,
+    createDeveloperNotification,
+    SubscriptionNotificationEnum,
 }

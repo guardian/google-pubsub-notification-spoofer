@@ -3,7 +3,7 @@ const ROUTES = {
         index: '/',
         success: '/success',
         error: '/error',
-        handleNotification: '/handle-notification',
+        notification: '/notification',
     }
 }
 
