@@ -71,11 +71,8 @@ const sendMessageNotification = (subscriptionNotification) => {
             return { data, status }
         })
         .then(data => {
-            // console.log(data.status);
             return data.status;
         }).catch(err => {
-            // console.log(err.response.status);
-            // console.log(err.response.statusText);
             return err.response.status;
         });
 }
