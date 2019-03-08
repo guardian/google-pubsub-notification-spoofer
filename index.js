@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { ROUTES, isSuccessStatus } = require('./config/routes')
 
+const sqsProducer = require('./sqs')
+
 const app = express();
 const PORT = 5000;
 const pages = ROUTES.pages;
@@ -40,16 +42,18 @@ app.get(pages.error, (req, res) => {
 
 app.post(pages.notification, (req, res) => {
     const { subscriptionNotification } = req.body;
+//
+//    sendMessageNotification(subscriptionNotification)
+//        .then(status => {
+//
+//            const successRoute = pages.success + '?notificationType=' + subscriptionNotification;
+//            const errorRoute = pages.error + '?errorStatus=' + status;
+//
+//            const redirectPage = (isSuccessStatus(status)) ?  successRoute : errorRoute;
+//            res.redirect(302, redirectPage);
+//        });
 
-    sendMessageNotification(subscriptionNotification)
-        .then(status => {
-
-            const successRoute = pages.success + '?notificationType=' + subscriptionNotification;
-            const errorRoute = pages.error + '?errorStatus=' + status;
-
-            const redirectPage = (isSuccessStatus(status)) ?  successRoute : errorRoute;
-            res.redirect(302, redirectPage);
-        });
+    sqsProducer.send(subscriptionNotification)
 })
 
 app.listen(PORT, () => {
