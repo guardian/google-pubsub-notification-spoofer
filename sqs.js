@@ -16,14 +16,15 @@ function send(message){
     })
 
     console.log("Sending Message" + sqsMessage)
-    producer.send([sqsMessage], function(err) {
+    const res = producer.send(sqsMessage, function(err) {
       if (err) {
-      console.log(err);
+        console.log(err);
         return false;
-      } else {
-        return true;
       }
     });
+
+
+    return (res === undefined)
 }
 
 module.exports = {
