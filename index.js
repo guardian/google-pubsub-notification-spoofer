@@ -41,19 +41,14 @@ app.get(pages.error, (req, res) => {
 })
 
 app.post(pages.notification, (req, res) => {
-    const { subscriptionNotification } = req.body;
-//
-//    sendMessageNotification(subscriptionNotification)
-//        .then(status => {
-//
-//            const successRoute = pages.success + '?notificationType=' + subscriptionNotification;
-//            const errorRoute = pages.error + '?errorStatus=' + status;
-//
-//            const redirectPage = (isSuccessStatus(status)) ?  successRoute : errorRoute;
-//            res.redirect(302, redirectPage);
-//        });
+    const { subscriptionNotification } = req.bogidy;
 
-    sqsProducer.send(subscriptionNotification)
+  const successRoute = pages.success + '?notificationType=' + subscriptionNotification;
+  const errorRoute = pages.error + '?errorStatus=500';
+
+  const result = sqsProducer.send(subscriptionNotification)
+  const redirectPage = result ?  successRoute : errorRoute;
+  res.redirect(302, redirectPage);
 })
 
 app.listen(PORT, () => {
