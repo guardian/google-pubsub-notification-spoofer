@@ -86,25 +86,8 @@ const createDeveloperNotification = (skuId, notificationType) => {
     return newPushMessage;
 }
 
-const sendMessageNotification = (subscriptionNotification) => {
-    const newDeveloperNotification = createDeveloperNotification(subscriptionNotification);
-
-    return axios.post(`${api.HOST_URL}${api.HANDLE_MESSAGE}`, newDeveloperNotification)
-        .then(res => {
-            
-            const { data, status } = res;
-            return { data, status }
-        })
-        .then(data => {
-            return data.status;
-        }).catch(err => {
-            return err.response.status;
-        });
-}
-
 module.exports = {
     subscriptionNotifications,
-    sendMessageNotification,
     createDeveloperNotification,
     SubscriptionNotificationEnum,
 }

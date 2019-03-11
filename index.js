@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { ROUTES, isSuccessStatus } = require('./config/routes')
+const { subscriptionPurchase, googleAccessToken } = require('./services/mockgooglereplies')
 
 const sqsProducer = require('./sqs')
 
@@ -12,7 +13,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 const {
     subscriptionNotifications, 
-    sendMessageNotification,
     SubscriptionNotificationEnum,
     createDeveloperNotification
 } = require('./services/notifications');
@@ -40,6 +40,16 @@ app.get(pages.error, (req, res) => {
         errorStatus: req.query.errorStatus,
     });
 })
+
+app.get(pages.accessToken, (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(googleAccessToken));
+});
+
+app.get(pages.subscriptionPurchase, (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(subscriptionPurchase));
+});
 
 app.post(pages.notification, (req, res) => {
     const { subscriptionNotification, skuId } = req.body;
