@@ -8,23 +8,23 @@ const producer = Producer.create({
   secretAccessKey: 'x'
 });
 
-function send(message){
+function send(message) {
     let randomId = Math.floor(Math.random() * 10000).toString()
     let sqsMessage = JSON.stringify({
         id: randomId,
         body: message
     })
 
-    console.log("Sending Message" + sqsMessage)
-    const res = producer.send(sqsMessage, function(err) {
-      if (err) {
-        console.log(err);
-        return false;
-      }
+    return new Promise((resolve, reject) => {
+         console.log("Sending Message" + sqsMessage)
+        const res = producer.send(sqsMessage, function(err) {
+              if (err) {
+                console.log(err);
+                return reject(err)
+              }
+                resolve()
+            });
     });
-
-
-    return (res === undefined)
 }
 
 module.exports = {

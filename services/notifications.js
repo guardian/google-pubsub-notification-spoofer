@@ -66,7 +66,7 @@ const createDeveloperNotification = (skuId, notificationType) => {
     const newDeveloperNotification = { 
         ...developerNotification, 
         subscriptionNotification, 
-        ...{ eventTimeMillis: Date.now().toString() },
+        eventTimeMillis: Date.now().toString(),
     }
 
 
@@ -74,10 +74,8 @@ const createDeveloperNotification = (skuId, notificationType) => {
 
     const newInnerMessage = {
       ...googlePushMessage.message,
-      ...{
         publishTime: Date.now().toString(),
         data: Buffer.from(JSON.stringify(newDeveloperNotification)).toString("base64")
-        }
     }
 
     const newPushMessage = {

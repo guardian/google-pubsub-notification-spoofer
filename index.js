@@ -47,9 +47,8 @@ app.post(pages.notification, (req, res) => {
   const successRoute = pages.success + '?notificationType=' + subscriptionNotification;
   const errorRoute = pages.error + '?errorStatus=500';
 
-  const result = sqsProducer.send(createDeveloperNotification(skuId, subscriptionNotification))
-  const redirectPage = result ?  successRoute : errorRoute;
-  res.redirect(302, redirectPage);
+  sqsProducer.send(createDeveloperNotification(skuId, subscriptionNotification))
+    .then(() => res.redirect(302, successRoute), () => res.redirect(302, errorRoute))
 })
 
 app.listen(PORT, () => {
