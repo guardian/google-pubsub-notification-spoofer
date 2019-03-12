@@ -4,6 +4,8 @@ const ROUTES = {
         success: '/success',
         error: '/error',
         notification: '/notification',
+        accessToken: '/o/oauth2/token/',
+        subscriptionPurchase: '/androidpublisher/v3/applications/purchases/subscriptions/:sku/tokens/:purchaseToken'
     }
 }
 

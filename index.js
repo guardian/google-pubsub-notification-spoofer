@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { ROUTES, isSuccessStatus } = require('./config/routes')
+const { subscriptionPurchase, googleAccessToken } = require('./services/mockgooglereplies')
+
+const sqsProducer = require('./sqs')
 
 const app = express();
 const PORT = 5000;
@@ -10,8 +13,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 const {
     subscriptionNotifications, 
-    sendMessageNotification,
-    SubscriptionNotificationEnum 
+    SubscriptionNotificationEnum,
+    createDeveloperNotification
 } = require('./services/notifications');
 
 app.set('view engine', 'ejs');
@@ -38,18 +41,24 @@ app.get(pages.error, (req, res) => {
     });
 })
 
+app.get(pages.accessToken, (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(googleAccessToken));
+});
+
+app.get(pages.subscriptionPurchase, (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(subscriptionPurchase));
+});
+
 app.post(pages.notification, (req, res) => {
-    const { subscriptionNotification } = req.body;
+    const { subscriptionNotification, skuId } = req.body;
 
-    sendMessageNotification(subscriptionNotification)
-        .then(status => {
+  const successRoute = pages.success + '?notificationType=' + subscriptionNotification;
+  const errorRoute = pages.error + '?errorStatus=500';
 
-            const successRoute = pages.success + '?notificationType=' + subscriptionNotification;
-            const errorRoute = pages.error + '?errorStatus=' + status;
-
-            const redirectPage = (isSuccessStatus(status)) ?  successRoute : errorRoute;
-            res.redirect(302, redirectPage);
-        });
+  sqsProducer.send(createDeveloperNotification(skuId, subscriptionNotification))
+    .then(() => res.redirect(302, successRoute), () => res.redirect(302, errorRoute))
 })
 
 app.listen(PORT, () => {

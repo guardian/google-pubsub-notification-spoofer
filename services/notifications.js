@@ -5,7 +5,7 @@ const SubscriptionNotificationEnum = {
     1: 'SUBSCRIPTION_RECOVERED', // - A subscription was recovered from account hold.
     2: 'SUBSCRIPTION_RENEWED', // - An active subscription was renewed.
     3: 'SUBSCRIPTION_CANCELED', // - A subscription was either voluntarily or involuntarily cancelled. For voluntary cancellation, sent when the user cancels.
-    4: 'SUBSCRIP￼￼TION_PURCHASED', // - A new subscription was purchased.
+    4: 'SUBSCRIPTION_PURCHASED', // - A new subscription was purchased.
     5: 'SUBSCRIPTION_ON_HOLD', // - A subscription has entered account hold (if enabled).
     6: 'SUBSCRIPTION_IN_GRACE_PERIOD', // - A subscription has entered grace period (if enabled).
     7: 'SUBSCRIPTION_RESTARTED', // - User has reactivated their subscription from Play > Account > Subscriptions (requires opt-in for subscription restoration)
@@ -39,47 +39,55 @@ const developerNotification = {
     "version":"1.0",
     "notificationType": null,
     "purchaseToken":"PURCHASE_TOKEN",
-    "subscriptionId":"my.sku"
+    "subscriptionId": null
   }
 }
 
-const createDeveloperNotification = (notificationType) => {
+const googlePushMessage = {
+  "message": {
+    "data": null,
+    "messageId": "randomstring",
+    "publishTime": null
+  },
+  "subscription": "subscription"
+}
+
+
+const createDeveloperNotification = (skuId, notificationType) => {
 
     // add notificationType to subscriptionNotification
     const subscriptionNotification = { 
         ...developerNotification.subscriptionNotification, 
-        notificationType: notificationType,
+        notificationType: parseInt(notificationType),
+        subscriptionId: skuId,
     }
 
     // add eventTimeMillis and subscriptionNotification to developerNotification
     const newDeveloperNotification = { 
         ...developerNotification, 
         subscriptionNotification, 
-        ...{ eventTimeMillis: Date.now() },
+        eventTimeMillis: Date.now().toString(),
     }
 
-    return newDeveloperNotification;
-}
 
-const sendMessageNotification = (subscriptionNotification) => {
-    const newDeveloperNotification = createDeveloperNotification(subscriptionNotification);
+    console.log(JSON.stringify(newDeveloperNotification))
 
-    return axios.post(`${api.HOST_URL}${api.HANDLE_MESSAGE}`, newDeveloperNotification)
-        .then(res => {
-            
-            const { data, status } = res;
-            return { data, status }
-        })
-        .then(data => {
-            return data.status;
-        }).catch(err => {
-            return err.response.status;
-        });
+    const newInnerMessage = {
+      ...googlePushMessage.message,
+        publishTime: Date.now().toString(),
+        data: Buffer.from(JSON.stringify(newDeveloperNotification)).toString("base64")
+    }
+
+    const newPushMessage = {
+      ...googlePushMessage,
+      message: newInnerMessage
+    }
+
+    return newPushMessage;
 }
 
 module.exports = {
     subscriptionNotifications,
-    sendMessageNotification,
     createDeveloperNotification,
     SubscriptionNotificationEnum,
 }
