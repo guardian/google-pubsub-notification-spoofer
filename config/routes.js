@@ -5,7 +5,7 @@ const ROUTES = {
         error: '/error',
         notification: '/notification',
         accessToken: '/o/oauth2/token/',
-        subscriptionPurchase: '/androidpublisher/v3/applications/purchases/subscriptions/:sku/tokens/:purchaseToken'
+        subscriptionPurchase: '/androidpublisher/v3/applications/:org/purchases/subscriptions/:sku/tokens/:purchaseToken'
     }
 }
 

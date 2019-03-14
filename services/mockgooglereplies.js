@@ -8,11 +8,11 @@ const googleAccessToken = {
 const subscriptionPurchase = {
   "kind": "androidpublisher#subscriptionPurchase",
   "startTimeMillis": 1,
-  "expiryTimeMillis": 1,
+  "expiryTimeMillis": 12,
   "autoRenewing": true,
   "priceCurrencyCode": "GBP",
-  "priceAmountMicros": 1,
-  "countryCode": "en-GB",
+  "priceAmountMicros": 50000000,
+  "countryCode": "GB",
   "developerPayload": "devPayload",
   "paymentState": 1,
   "cancelReason": 1,
@@ -25,9 +25,9 @@ const subscriptionPurchase = {
   "linkedPurchaseToken": "linkedPurchaseToken",
   "purchaseType": 1,
   "profileName": "profileName",
-  "emailAddress": "email",
-  "givenName": "givenName",
-  "familyName": "familyName",
+  "emailAddress": "yusuf.faraji.freelancer@theguardian.com",
+  "givenName": "Yusuf",
+  "familyName": "Faraji",
   "profileId": "profileId"
 }
 
