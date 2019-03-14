@@ -13,10 +13,10 @@ function send(message) {
     let sqsMessage = JSON.stringify({
         id: randomId,
         body: message
-    })
+    });
 
     return new Promise((resolve, reject) => {
-         console.log("Sending Message" + sqsMessage)
+         console.log("Sending Message" + sqsMessage);
         const res = producer.send(sqsMessage, function(err) {
               if (err) {
                 console.log(err);
@@ -29,4 +29,4 @@ function send(message) {
 
 module.exports = {
     send
-}
+};

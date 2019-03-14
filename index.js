@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 const {
     subscriptionNotifications, 
     SubscriptionNotificationEnum,
-    createDeveloperNotification
+    createPubSubMessage
 } = require('./services/notifications');
 
 app.set('view engine', 'ejs');
@@ -57,7 +57,7 @@ app.post(pages.notification, (req, res) => {
   const successRoute = pages.success + '?notificationType=' + subscriptionNotification;
   const errorRoute = pages.error + '?errorStatus=500';
 
-  sqsProducer.send(createDeveloperNotification(skuId, subscriptionNotification))
+  sqsProducer.send(createPubSubMessage(skuId, subscriptionNotification))
     .then(() => res.redirect(302, successRoute), () => res.redirect(302, errorRoute))
 })
 

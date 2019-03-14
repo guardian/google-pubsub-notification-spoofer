@@ -1,6 +1,3 @@
-const axios = require('axios');
-const api = require('../config/api');
-
 const SubscriptionNotificationEnum = {
     1: 'SUBSCRIPTION_RECOVERED', // - A subscription was recovered from account hold.
     2: 'SUBSCRIPTION_RENEWED', // - An active subscription was renewed.
@@ -13,7 +10,7 @@ const SubscriptionNotificationEnum = {
     9: 'SUBSCRIPTION_DEFERRED', // - A subscription's recurrence time has been extended.
     12: 'SUBSCRIPTION_REVOKED', // - A subscription has been revoked from the user before the expiration time.
     13: 'SUBSCRIPTION_EXPIRED', // - A subscription has expired.
-}
+};
 
 const subscriptionNotifications = [
     { type: SubscriptionNotificationEnum[1], value: 1 },
@@ -27,67 +24,36 @@ const subscriptionNotifications = [
     { type: SubscriptionNotificationEnum[9], value: 9 },
     { type: SubscriptionNotificationEnum[12], value: 12 },
     { type: SubscriptionNotificationEnum[13], value: 13 },
-]
+];
 
+const createPubSubMessage = (skuId, notificationType) => {
 
-const developerNotification = {
-  "version":"1.0",
-  "packageName":"com.some.thing",
-  "eventTimeMillis": null,
-  "subscriptionNotification":
-  {
-    "version":"1.0",
-    "notificationType": null,
-    "purchaseToken":"PURCHASE_TOKEN",
-    "subscriptionId": null
-  }
-}
-
-const googlePushMessage = {
-  "message": {
-    "data": null,
-    "messageId": "randomstring",
-    "publishTime": null
-  },
-  "subscription": "subscription"
-}
-
-
-const createDeveloperNotification = (skuId, notificationType) => {
-
-    // add notificationType to subscriptionNotification
-    const subscriptionNotification = { 
-        ...developerNotification.subscriptionNotification, 
-        notificationType: parseInt(notificationType),
+    const subscriptionNotification = {
+        version: "1.0",
+        notificationType: parseInt(notificationType, 10),
+        purchaseToken: "PURCHASE_TOKEN",
         subscriptionId: skuId,
-    }
+    };
 
-    // add eventTimeMillis and subscriptionNotification to developerNotification
-    const newDeveloperNotification = { 
-        ...developerNotification, 
-        subscriptionNotification, 
+    const developerNotification = {
+        version: "1.0",
+        packageName: "com.some.thing",
         eventTimeMillis: Date.now().toString(),
-    }
+        subscriptionNotification
+    };
 
-
-    console.log(JSON.stringify(newDeveloperNotification))
-
-    const newInnerMessage = {
-      ...googlePushMessage.message,
-        publishTime: Date.now().toString(),
-        data: Buffer.from(JSON.stringify(newDeveloperNotification)).toString("base64")
-    }
-
-    const newPushMessage = {
-      ...googlePushMessage,
-      message: newInnerMessage
-    }
-
-    return newPushMessage;
-}
+    return {
+        subscription: "subscription",
+        message: {
+            messageId: "randomstring",
+            publishTime: Date.now().toString(),
+            data: Buffer.from(JSON.stringify(developerNotification)).toString("base64")
+        }
+    };
+};
 
 module.exports = {
     subscriptionNotifications,
-    createDeveloperNotification,
+    createPubSubMessage,
     SubscriptionNotificationEnum,
-}
+};
