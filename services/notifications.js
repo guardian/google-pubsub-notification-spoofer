@@ -72,16 +72,12 @@ const createDeveloperNotification = (skuId, notificationType) => {
 
     console.log(JSON.stringify(newDeveloperNotification))
 
-    const newInnerMessage = {
+    const newPushMessage = {
       ...googlePushMessage.message,
         publishTime: Date.now().toString(),
         data: Buffer.from(JSON.stringify(newDeveloperNotification)).toString("base64")
     }
 
-    const newPushMessage = {
-      ...googlePushMessage,
-      message: newInnerMessage
-    }
 
     return newPushMessage;
 }
