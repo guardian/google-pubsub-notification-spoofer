@@ -6,4 +6,4 @@ module.exports = {
     HOST_URL,
     HEALTH_CHECK,
     HANDLE_MESSAGE,
-}
+};
