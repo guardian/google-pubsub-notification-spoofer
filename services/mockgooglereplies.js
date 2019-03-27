@@ -7,25 +7,19 @@ const googleAccessToken = {
 
 const subscriptionPurchase = {
   "kind": "androidpublisher#subscriptionPurchase",
-  "startTimeMillis": 1,
-  "expiryTimeMillis": 1,
+  "startTimeMillis": "1",
+  "expiryTimeMillis": "1",
   "autoRenewing": true,
   "priceCurrencyCode": "GBP",
-  "priceAmountMicros": 1,
-  "countryCode": "en-GB",
+  "priceAmountMicros": "500000000",
+  "countryCode": "GB",
   "developerPayload": "devPayload",
   "paymentState": 1,
-  "cancelReason": 1,
-  "userCancellationTimeMillis": 1,
-  "cancelSurveyResult": {
-    "cancelSurveyReason": 1,
-    "userInputCancelReason": "reason"
-  },
-  "orderId": "orderId",
+  "orderId": "orderId-28764587264389289467",
   "linkedPurchaseToken": "linkedPurchaseToken",
   "purchaseType": 1,
   "profileName": "profileName",
-  "emailAddress": "email",
+  "emailAddress": "yusuf.faraji.freelancer@guardian.com",
   "givenName": "givenName",
   "familyName": "familyName",
   "profileId": "profileId"
