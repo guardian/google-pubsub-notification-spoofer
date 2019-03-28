@@ -9,11 +9,7 @@ const producer = Producer.create({
 });
 
 function send(message) {
-    let randomId = Math.floor(Math.random() * 10000).toString()
-    let sqsMessage = JSON.stringify({
-        id: randomId,
-        body: message
-    });
+    let sqsMessage = JSON.stringify(message)
 
     return new Promise((resolve, reject) => {
          console.log("Sending Message" + sqsMessage);

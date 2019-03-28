@@ -41,7 +41,7 @@ app.get(pages.error, (req, res) => {
     });
 })
 
-app.get(pages.accessToken, (req, res) => {
+app.post(pages.accessToken, (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(googleAccessToken));
 });
